@@ -20779,6 +20779,112 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _contactsActions = require('../flux/contactsActions.js');
+
+var ContactsActions = _interopRequireWildcard(_contactsActions);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function handleAddContactFormSubmit(e) {
+    e.preventDefault();
+    console.log("form submitado");
+}
+
+var AddForm = function AddForm(props) {
+    return _react2.default.createElement(
+        'div',
+        { className: 'row' },
+        _react2.default.createElement(
+            'div',
+            { className: 'col-xs-12' },
+            _react2.default.createElement(
+                'div',
+                { className: 'well' },
+                _react2.default.createElement(
+                    'h3',
+                    { className: 'text-center' },
+                    'Agregar Contacto'
+                ),
+                _react2.default.createElement('hr', null),
+                _react2.default.createElement(
+                    'form',
+                    { action: '', onSubmit: handleAddContactFormSubmit.bind(undefined), className: 'form-horizontal' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'form-group' },
+                        _react2.default.createElement(
+                            'label',
+                            { htmlFor: 'name', className: 'control-label col-xs-1' },
+                            'Nombre:'
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'col-xs-11' },
+                            _react2.default.createElement('input', { type: 'text', className: 'form-control', name: 'name', placeholder: 'Nombre del contacto' })
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'form-group' },
+                        _react2.default.createElement(
+                            'label',
+                            { htmlFor: 'telefono', className: 'control-label col-xs-1' },
+                            'Telefono:'
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'col-xs-11' },
+                            _react2.default.createElement('input', { type: 'text', className: 'form-control', name: 'telefono', placeholder: 'Telefono' })
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'form-group' },
+                        _react2.default.createElement(
+                            'label',
+                            { htmlFor: 'email', className: 'control-label col-xs-1' },
+                            'Email:'
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'col-xs-11' },
+                            _react2.default.createElement('input', { type: 'text', className: 'form-control', name: 'email', placeholder: 'Email' })
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'row' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'col-xs-2 col-xs-offset-1' },
+                            _react2.default.createElement(
+                                'button',
+                                { type: 'submit', className: 'btn btn-primary' },
+                                'Crear contacto'
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    );
+};
+
+exports.default = AddForm;
+
+},{"../flux/contactsActions.js":178,"react":171}],174:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -20792,6 +20898,10 @@ var contactsActions = _interopRequireWildcard(_contactsActions);
 var _contactsStore = require('../flux/contactsStore.js');
 
 var _contactsStore2 = _interopRequireDefault(_contactsStore);
+
+var _AddForm = require('./AddForm.jsx');
+
+var _AddForm2 = _interopRequireDefault(_AddForm);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -20836,11 +20946,7 @@ var App = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 { className: 'well' },
-                _react2.default.createElement(
-                    'h1',
-                    null,
-                    'Hola mundo React'
-                )
+                _react2.default.createElement(_AddForm2.default, null)
             );
         }
     }]);
@@ -20850,7 +20956,7 @@ var App = function (_Component) {
 
 exports.default = App;
 
-},{"../flux/contactsActions.js":177,"../flux/contactsStore.js":179,"react":171}],174:[function(require,module,exports){
+},{"../flux/contactsActions.js":178,"../flux/contactsStore.js":180,"./AddForm.jsx":173,"react":171}],175:[function(require,module,exports){
 'use strict';
 
 require('whatwg-fetch');
@@ -20867,7 +20973,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-},{"./contactsActions.js":177,"./contactsConstants.js":178,"whatwg-fetch":172}],175:[function(require,module,exports){
+},{"./contactsActions.js":178,"./contactsConstants.js":179,"whatwg-fetch":172}],176:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20877,7 +20983,7 @@ exports.default = {
     UNO: 'UNO'
 };
 
-},{}],176:[function(require,module,exports){
+},{}],177:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20920,10 +21026,10 @@ var contactsDispatcher = new ContactsDispatcher();
 
 exports.default = contactsDispatcher;
 
-},{"flux":3}],177:[function(require,module,exports){
+},{"flux":3}],178:[function(require,module,exports){
 "use strict";
 
-},{}],178:[function(require,module,exports){
+},{}],179:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20933,7 +21039,7 @@ exports.default = {
     UNO: 'UNO'
 };
 
-},{}],179:[function(require,module,exports){
+},{}],180:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20999,7 +21105,7 @@ _ContactsDispatcher2.default.register(contactsStore.handleActions.bind(contactsS
 
 exports.default = contactsStore;
 
-},{"./ContactsAPI.js":174,"./ContactsConstants.js":175,"./ContactsDispatcher.js":176,"events":1}],180:[function(require,module,exports){
+},{"./ContactsAPI.js":175,"./ContactsConstants.js":176,"./ContactsDispatcher.js":177,"events":1}],181:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21016,7 +21122,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _reactDom.render)(_react2.default.createElement(_App2.default, null), document.getElementById('app'));
 
-},{"./components/App.jsx":173,"react":171,"react-dom":6}]},{},[180])
+},{"./components/App.jsx":174,"react":171,"react-dom":6}]},{},[181])
 
 
 //# sourceMappingURL=sourceMap/app.js.map

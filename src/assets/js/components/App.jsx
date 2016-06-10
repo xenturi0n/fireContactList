@@ -3,6 +3,8 @@ import React, {Component} from 'react';
 import * as contactsActions from '../flux/contactsActions.js';
 import ContactStore from '../flux/contactsStore.js';
 
+import AddForm from './AddForm.jsx';
+
 class App extends Component{
     constructor(){
         super();
@@ -21,7 +23,11 @@ class App extends Component{
     }
 
     render(){
-        return(<div className="well"><h1>Hola mundo React</h1></div>);
+        return(
+            <div className="well">
+                <AddForm />
+            </div>
+        );
     }
 }
 
