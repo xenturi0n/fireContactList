@@ -1,31 +1,33 @@
 import React, {Component} from 'react';
 
 import * as contactsActions from '../flux/contactsActions.js';
-import ContactStore from '../flux/contactsStore.js';
+import contactsStore from '../flux/contactsStore.js';
 
 import AddForm from './AddForm.jsx';
 
 class App extends Component{
     constructor(){
         super();
-        this.state= ContactStore.getState();
+        this.state= contactsStore.getState();
     }
 
-    coponentWillMount(){
-        ContactStore.on('change', this._handleContactStoreChange.bind(this));
+    componentWillMount(){
+        contactsStore.on('change', this.handleContactsStoreChange.bind(this)); 
     }
     componentWillUnmount(){
-        ContactStore.removeListener('change', this._handleContactStoreChange.bind(this));
+        contactsStore.removeListener('change', this.handleContactsStoreChange.bind(this));
     }
 
-    _handleContactStoreChange(){
-        this.setState(ContactStore.getState());
+    handleContactsStoreChange(){
+        console.log('Evento Recibido');
+        this.setState(contactsStore.getState());
     }
 
     render(){
+
         return(
             <div className="well">
-                <AddForm />
+                <AddForm fields={this.state.addFormFields}/>
             </div>
         );
     }
