@@ -32,7 +32,6 @@ class ContactsStore extends EventEmitter{
     }
 
     saveContact(){
-        console.log("Saving new Contact....");
         const contact={
             name: this.state.addFormFields.name.trim(),
             phone: this.state.addFormFields.phone.trim(),
@@ -43,12 +42,10 @@ class ContactsStore extends EventEmitter{
     }
 
     handleActions(action){
-        console.log("Action recibida en Store -> action=", action);
         switch(action.type){
 
             case ContactsConstants.NAME_FIELD_CHANGED:  
                 this.state.addFormFields.name=action.value;
-                console.log("Store emitiendo name changed -> this.state=", this.state);
                 this.emit('change');
                 break;
 
@@ -62,10 +59,23 @@ class ContactsStore extends EventEmitter{
                 this.emit('change');
                 break;
 
-            case ContactsConstants.SAVE_NEW_CONTACT:
-                this.saveContact();
+            case ContactsConstants.NEW_CONTACT_SAVED:
+                this.state.addFormFields=Object.assign({},{
+                    name: '',
+                    phone: '',
+                    email: ''
+                });
                 this.emit('change');
-                break;            
+                break;
+
+            case ContactsConstants.UPDATE_CONTACTS_LIST:
+                this.state.contacts= action.contacts;
+                this.emit('change');
+                break;
+
+            case ContactsConstants.DELETED_CONTACT:
+                console.log("Contacto eliminado "+ action.id );
+                break;
         }
     }
 }

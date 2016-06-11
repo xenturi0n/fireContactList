@@ -4,8 +4,8 @@ import ContactsStore from '../flux/contactsStore.js';
 
 function handleAddContactFormSubmit(e){    
     e.preventDefault(); 
-    console.log("form submitado");
     ContactsActions.saveNewContact(ContactsStore.getCleanAddFormFields());
+    e.target.querySelector('input').focus();
 }
 
 function handleNameFieldChange(e){
@@ -22,7 +22,6 @@ function handleEmailFieldChange(e){
 
 const AddForm = (props) => {
     const {name, phone, email}=props.fields;
-    console.log("Rendering AddForm -> props.fields=",props.fields);
     return(
         <div className="row">
             <div className="col-xs-12">

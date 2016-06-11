@@ -21375,8 +21375,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function handleAddContactFormSubmit(e) {
     e.preventDefault();
-    console.log("form submitado");
     ContactsActions.saveNewContact(_contactsStore2.default.getCleanAddFormFields());
+    e.target.querySelector('input').focus();
 }
 
 function handleNameFieldChange(e) {
@@ -21397,7 +21397,6 @@ var AddForm = function AddForm(props) {
     var phone = _props$fields.phone;
     var email = _props$fields.email;
 
-    console.log("Rendering AddForm -> props.fields=", props.fields);
     return _react2.default.createElement(
         'div',
         { className: 'row' },
@@ -21479,7 +21478,7 @@ var AddForm = function AddForm(props) {
 
 exports.default = AddForm;
 
-},{"../flux/contactsActions.js":178,"../flux/contactsStore.js":181,"react":173}],176:[function(require,module,exports){
+},{"../flux/contactsActions.js":180,"../flux/contactsStore.js":183,"react":173}],176:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21503,6 +21502,10 @@ var _contactsStore2 = _interopRequireDefault(_contactsStore);
 var _AddForm = require('./AddForm.jsx');
 
 var _AddForm2 = _interopRequireDefault(_AddForm);
+
+var _ContactsList = require('./ContactsList.jsx');
+
+var _ContactsList2 = _interopRequireDefault(_ContactsList);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -21539,7 +21542,6 @@ var App = function (_Component) {
     }, {
         key: 'handleContactsStoreChange',
         value: function handleContactsStoreChange() {
-            console.log('Evento Recibido');
             this.setState(_contactsStore2.default.getState());
         }
     }, {
@@ -21548,8 +21550,17 @@ var App = function (_Component) {
 
             return _react2.default.createElement(
                 'div',
-                { className: 'well' },
-                _react2.default.createElement(_AddForm2.default, { fields: this.state.addFormFields })
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'well' },
+                    _react2.default.createElement(_AddForm2.default, { fields: this.state.addFormFields })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'well' },
+                    _react2.default.createElement(_ContactsList2.default, { contacts: this.state.contacts })
+                )
             );
         }
     }]);
@@ -21559,13 +21570,179 @@ var App = function (_Component) {
 
 exports.default = App;
 
-},{"../flux/contactsActions.js":178,"../flux/contactsStore.js":181,"./AddForm.jsx":175,"react":173}],177:[function(require,module,exports){
+},{"../flux/contactsActions.js":180,"../flux/contactsStore.js":183,"./AddForm.jsx":175,"./ContactsList.jsx":178,"react":173}],177:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _contactsActions = require('../flux/contactsActions.js');
+
+var ContactsActions = _interopRequireWildcard(_contactsActions);
+
+var _contactsStore = require('../flux/contactsStore.js');
+
+var _contactsStore2 = _interopRequireDefault(_contactsStore);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function deleteContact(e, id) {
+    e.preventDefault();
+    ContactsActions.deleteContact(id);
+}
+
+var Contact = function Contact(props) {
+    var _props$contact = props.contact;
+    var id = _props$contact.id;
+    var name = _props$contact.name;
+    var email = _props$contact.email;
+    var phone = _props$contact.phone;
+
+    return _react2.default.createElement(
+        'tr',
+        null,
+        _react2.default.createElement(
+            'td',
+            null,
+            name
+        ),
+        _react2.default.createElement(
+            'td',
+            null,
+            email
+        ),
+        _react2.default.createElement(
+            'td',
+            null,
+            phone
+        ),
+        _react2.default.createElement(
+            'td',
+            null,
+            _react2.default.createElement(
+                'a',
+                { href: '#' },
+                _react2.default.createElement('span', { className: 'glyphicon glyphicon-pencil' })
+            )
+        ),
+        _react2.default.createElement(
+            'td',
+            null,
+            _react2.default.createElement(
+                'a',
+                { href: '#', className: 'text-danger' },
+                _react2.default.createElement('span', { className: 'glyphicon glyphicon-remove', onClick: function onClick(e) {
+                        return deleteContact(e, id);
+                    } })
+            )
+        )
+    );
+};
+
+exports.default = Contact;
+
+},{"../flux/contactsActions.js":180,"../flux/contactsStore.js":183,"react":173}],178:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _contactsActions = require('../flux/contactsActions.js');
+
+var ContactsActions = _interopRequireWildcard(_contactsActions);
+
+var _contactsStore = require('../flux/contactsStore.js');
+
+var _contactsStore2 = _interopRequireDefault(_contactsStore);
+
+var _Contact = require('./Contact.jsx');
+
+var _Contact2 = _interopRequireDefault(_Contact);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function renderContacts(contacts) {
+    return contacts.map(function (contact) {
+        return _react2.default.createElement(_Contact2.default, { contact: contact, key: contact.id });
+    });
+}
+
+var ContactsList = function ContactsList(props) {
+    var contacts = props.contacts;
+
+    var contactItems = renderContacts(contacts);
+    return _react2.default.createElement(
+        'div',
+        { className: 'panel panel-default' },
+        _react2.default.createElement(
+            'div',
+            { className: 'panel-heading' },
+            _react2.default.createElement(
+                'h3',
+                { className: 'text-center' },
+                _react2.default.createElement('span', { className: 'glyphicon glyphicon-book' }),
+                ' Contactos'
+            )
+        ),
+        _react2.default.createElement(
+            'table',
+            { className: 'table' },
+            _react2.default.createElement(
+                'tbody',
+                null,
+                _react2.default.createElement(
+                    'tr',
+                    null,
+                    _react2.default.createElement(
+                        'th',
+                        null,
+                        _react2.default.createElement('span', { className: 'glyphicon glyphicon-user' }),
+                        ' nombre'
+                    ),
+                    _react2.default.createElement(
+                        'th',
+                        null,
+                        _react2.default.createElement('span', { className: 'glyphicon glyphicon-envelope' }),
+                        ' email'
+                    ),
+                    _react2.default.createElement(
+                        'th',
+                        null,
+                        _react2.default.createElement('span', { className: 'glyphicon glyphicon-earphone' }),
+                        ' telefono'
+                    )
+                ),
+                contactItems
+            )
+        )
+    );
+};
+
+exports.default = ContactsList;
+
+},{"../flux/contactsActions.js":180,"../flux/contactsStore.js":183,"./Contact.jsx":177,"react":173}],179:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.saveNewContact = saveNewContact;
+exports.getContacts = getContacts;
+exports.deleteContact = deleteContact;
 
 require('whatwg-fetch');
 
@@ -21585,8 +21762,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-// console.log(Firebase);
-
 var config = {
     apiKey: "AIzaSyBBX0nuXb4qEHMYJwlAzhcHJwG8lb59xcg",
     authDomain: "firecontactslist.firebaseapp.com",
@@ -21599,11 +21774,27 @@ _firebase2.default.initializeApp(config);
 var rootRef = firebase.database().ref();
 var Database = _firebase2.default.database();
 
+Database.ref('contacts/').on('value', function (snapshot) {
+    var newContacts = [];
+    snapshot.forEach(function (key) {
+        newContacts.push(Object.assign(key.val().contact, { id: key.key }));
+    });
+    ContactsActions.updateContactsList(newContacts);
+});
+
 function saveNewContact(contact) {
-    Database.ref('contacts/').push(contact);
+    Database.ref('contacts/').push({ contact: Object.assign(contact, { created: Date.now() }) });
 }
 
-},{"./contactsActions.js":178,"./contactsConstants.js":179,"firebase":3,"whatwg-fetch":174}],178:[function(require,module,exports){
+function getContacts() {
+    Database.ref('contacts/');
+}
+
+function deleteContact(id) {
+    Database.ref('contacts/' + id).remove();
+}
+
+},{"./contactsActions.js":180,"./contactsConstants.js":181,"firebase":3,"whatwg-fetch":174}],180:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21613,6 +21804,8 @@ exports.nameFieldChanged = nameFieldChanged;
 exports.phoneFieldChanged = phoneFieldChanged;
 exports.emailFieldChanged = emailFieldChanged;
 exports.saveNewContact = saveNewContact;
+exports.updateContactsList = updateContactsList;
+exports.deleteContact = deleteContact;
 
 var _contactsConstants = require('./contactsConstants.js');
 
@@ -21652,12 +21845,29 @@ function emailFieldChanged(value) {
 }
 
 function saveNewContact(contact) {
-    console.log("Actions contacto recibido ->", contact);
     ContactsAPI.saveNewContact(contact);
-    //call to firebase API
+    _contactsDispatcher2.default.dispatch({
+        type: _contactsConstants2.default.NEW_CONTACT_SAVED,
+        contact: contact
+    });
 }
 
-},{"./contactsAPI.js":177,"./contactsConstants.js":179,"./contactsDispatcher.js":180}],179:[function(require,module,exports){
+function updateContactsList(newContacts) {
+    _contactsDispatcher2.default.dispatch({
+        type: _contactsConstants2.default.UPDATE_CONTACTS_LIST,
+        contacts: newContacts
+    });
+}
+
+function deleteContact(id) {
+    ContactsAPI.deleteContact(id);
+    _contactsDispatcher2.default.dispatch({
+        type: _contactsConstants2.default.DELETED_CONTACT,
+        id: id
+    });
+}
+
+},{"./contactsAPI.js":179,"./contactsConstants.js":181,"./contactsDispatcher.js":182}],181:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21667,11 +21877,13 @@ exports.default = {
     NAME_FIELD_CHANGED: 'ADD FORM NAME FIELD CHANGED',
     PHONE_FIELD_CHANGED: 'ADD FORM PHONE FIELD CHANGED',
     EMAIL_FIELD_CHANGED: 'ADD FORM EMAIL FIELD CHANGED',
-    SAVE_NEW_CONTACT: 'SAVE NEW CONTACT'
+    NEW_CONTACT_SAVED: 'NEW CONTACT SAVED',
+    UPDATE_CONTACTS_LIST: 'UPDATE_CONTACTS_LIST',
+    DELETED_CONTACT: 'DELETED_CONTACT'
 };
 
-},{}],180:[function(require,module,exports){
-"use strict";
+},{}],182:[function(require,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -21681,7 +21893,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _flux = require("flux");
+var _flux = require('flux');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -21699,12 +21911,11 @@ var ContactsDispatcher = function (_Dispatcher) {
     }
 
     _createClass(ContactsDispatcher, [{
-        key: "dispatch",
+        key: 'dispatch',
         value: function dispatch() {
             var action = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-            console.log("Despachando ->", action);
-            _get(Object.getPrototypeOf(ContactsDispatcher.prototype), "dispatch", this).call(this, action);
+            _get(Object.getPrototypeOf(ContactsDispatcher.prototype), 'dispatch', this).call(this, action);
         }
     }]);
 
@@ -21713,7 +21924,7 @@ var ContactsDispatcher = function (_Dispatcher) {
 
 exports.default = new ContactsDispatcher();
 
-},{"flux":5}],181:[function(require,module,exports){
+},{"flux":5}],183:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21791,7 +22002,6 @@ var ContactsStore = function (_EventEmitter) {
     }, {
         key: 'saveContact',
         value: function saveContact() {
-            console.log("Saving new Contact....");
             var contact = {
                 name: this.state.addFormFields.name.trim(),
                 phone: this.state.addFormFields.phone.trim(),
@@ -21803,12 +22013,10 @@ var ContactsStore = function (_EventEmitter) {
     }, {
         key: 'handleActions',
         value: function handleActions(action) {
-            console.log("Action recibida en Store -> action=", action);
             switch (action.type) {
 
                 case _contactsConstants2.default.NAME_FIELD_CHANGED:
                     this.state.addFormFields.name = action.value;
-                    console.log("Store emitiendo name changed -> this.state=", this.state);
                     this.emit('change');
                     break;
 
@@ -21822,9 +22030,22 @@ var ContactsStore = function (_EventEmitter) {
                     this.emit('change');
                     break;
 
-                case _contactsConstants2.default.SAVE_NEW_CONTACT:
-                    this.saveContact();
+                case _contactsConstants2.default.NEW_CONTACT_SAVED:
+                    this.state.addFormFields = Object.assign({}, {
+                        name: '',
+                        phone: '',
+                        email: ''
+                    });
                     this.emit('change');
+                    break;
+
+                case _contactsConstants2.default.UPDATE_CONTACTS_LIST:
+                    this.state.contacts = action.contacts;
+                    this.emit('change');
+                    break;
+
+                case _contactsConstants2.default.DELETED_CONTACT:
+                    console.log("Contacto eliminado " + action.id);
                     break;
             }
         }
@@ -21838,7 +22059,7 @@ _contactsDispatcher2.default.register(contactsStore.handleActions.bind(contactsS
 
 exports.default = contactsStore;
 
-},{"./contactsAPI.js":177,"./contactsConstants.js":179,"./contactsDispatcher.js":180,"./utils":182,"events":1}],182:[function(require,module,exports){
+},{"./contactsAPI.js":179,"./contactsConstants.js":181,"./contactsDispatcher.js":182,"./utils":184,"events":1}],184:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21849,7 +22070,7 @@ function allTrim(sting) {
     return sting.replace(/\s+/g, ' ').replace(/^\s+|\s+$/, '');
 }
 
-},{}],183:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21866,7 +22087,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _reactDom.render)(_react2.default.createElement(_App2.default, null), document.getElementById('app'));
 
-},{"./components/App.jsx":176,"react":173,"react-dom":8}]},{},[183])
+},{"./components/App.jsx":176,"react":173,"react-dom":8}]},{},[185])
 
 
 //# sourceMappingURL=sourceMap/app.js.map

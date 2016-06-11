@@ -4,6 +4,8 @@ import * as contactsActions from '../flux/contactsActions.js';
 import contactsStore from '../flux/contactsStore.js';
 
 import AddForm from './AddForm.jsx';
+import ContactsList from './ContactsList.jsx';
+
 
 class App extends Component{
     constructor(){
@@ -19,15 +21,20 @@ class App extends Component{
     }
 
     handleContactsStoreChange(){
-        console.log('Evento Recibido');
         this.setState(contactsStore.getState());
     }
 
     render(){
 
         return(
-            <div className="well">
-                <AddForm fields={this.state.addFormFields}/>
+            <div>
+                <div className="well">
+                    <AddForm fields={this.state.addFormFields}/>                
+                </div>
+                <div className="well">
+                    <ContactsList contacts={this.state.contacts}/>
+                </div>
+                
             </div>
         );
     }

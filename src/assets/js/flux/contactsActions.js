@@ -24,7 +24,24 @@ export function emailFieldChanged(value){
 }
 
 export function saveNewContact(contact){
-    console.log("Actions contacto recibido ->", contact);
     ContactsAPI.saveNewContact(contact);
-    //call to firebase API
+    ContactsDispatcher.dispatch({
+        type: ContactsConstants.NEW_CONTACT_SAVED,
+        contact: contact
+    });
+}
+
+export function updateContactsList(newContacts){
+    ContactsDispatcher.dispatch({
+        type: ContactsConstants.UPDATE_CONTACTS_LIST,
+        contacts: newContacts
+    });
+}
+
+export function deleteContact(id){
+    ContactsAPI.deleteContact(id);
+    ContactsDispatcher.dispatch({
+        type: ContactsConstants.DELETED_CONTACT,
+        id: id
+    });
 }
