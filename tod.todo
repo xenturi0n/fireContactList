@@ -1,0 +1,6 @@
+-Implementar funcionalidad para editar contactos
+    -cada celda de la fila del contacto a editar se debe convertir en un input editable
+    -el icono de editar se debe convertir en uno de guardar
+    -el icono de eliminar se debe convertir en cancelar
+
+-encontrar la forma de revertir el estado de la aplicacion despues de una edicion o eliminacion
