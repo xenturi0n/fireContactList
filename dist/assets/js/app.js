@@ -21414,55 +21414,43 @@ var AddForm = function AddForm(props) {
                 _react2.default.createElement('hr', null),
                 _react2.default.createElement(
                     'form',
-                    { action: '', onSubmit: handleAddContactFormSubmit.bind(undefined), className: 'form-horizontal' },
+                    { action: '', onSubmit: handleAddContactFormSubmit.bind(undefined), className: 'form' },
                     _react2.default.createElement(
                         'div',
                         { className: 'form-group' },
                         _react2.default.createElement(
                             'label',
-                            { htmlFor: 'name', className: 'control-label col-xs-1' },
+                            { htmlFor: 'name', className: 'control-label' },
                             'Nombre:'
                         ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'col-xs-11' },
-                            _react2.default.createElement('input', { type: 'text', className: 'form-control', name: 'name', placeholder: 'Nombre del contacto', value: name, onChange: handleNameFieldChange.bind(undefined) })
-                        )
+                        _react2.default.createElement('input', { type: 'text', className: 'form-control', name: 'name', placeholder: 'Nombre del contacto', value: name, onChange: handleNameFieldChange.bind(undefined) })
                     ),
                     _react2.default.createElement(
                         'div',
                         { className: 'form-group' },
                         _react2.default.createElement(
                             'label',
-                            { htmlFor: 'telefono', className: 'control-label col-xs-1' },
+                            { htmlFor: 'telefono', className: 'control-label' },
                             'Telefono:'
                         ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'col-xs-11' },
-                            _react2.default.createElement('input', { type: 'text', className: 'form-control', name: 'telefono', placeholder: 'Telefono', value: phone, onChange: handlePhoneFieldChange.bind(undefined) })
-                        )
+                        _react2.default.createElement('input', { type: 'text', className: 'form-control', name: 'telefono', placeholder: 'Telefono', value: phone, onChange: handlePhoneFieldChange.bind(undefined) })
                     ),
                     _react2.default.createElement(
                         'div',
                         { className: 'form-group' },
                         _react2.default.createElement(
                             'label',
-                            { htmlFor: 'email', className: 'control-label col-xs-1' },
+                            { htmlFor: 'email', className: 'control-label' },
                             'Email:'
                         ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'col-xs-11' },
-                            _react2.default.createElement('input', { type: 'text', className: 'form-control', name: 'email', placeholder: 'Email', value: email, onChange: handleEmailFieldChange.bind(undefined) })
-                        )
+                        _react2.default.createElement('input', { type: 'text', className: 'form-control', name: 'email', placeholder: 'Email', value: email, onChange: handleEmailFieldChange.bind(undefined) })
                     ),
                     _react2.default.createElement(
                         'div',
                         { className: 'row' },
                         _react2.default.createElement(
                             'div',
-                            { className: 'col-xs-2 col-xs-offset-1' },
+                            { className: 'col-xs-12' },
                             _react2.default.createElement(
                                 'button',
                                 { type: 'submit', className: 'btn btn-primary' },
@@ -21547,19 +21535,26 @@ var App = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-
             return _react2.default.createElement(
                 'div',
                 null,
                 _react2.default.createElement(
                     'div',
-                    { className: 'well' },
-                    _react2.default.createElement(_AddForm2.default, { fields: this.state.addFormFields })
+                    { className: 'row' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'col-xs-12' },
+                        _react2.default.createElement(_AddForm2.default, { fields: this.state.addFormFields })
+                    )
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'well' },
-                    _react2.default.createElement(_ContactsList2.default, { contacts: this.state.contacts })
+                    { className: 'row' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'col-xs-12' },
+                        _react2.default.createElement(_ContactsList2.default, this.state)
+                    )
                 )
             );
         }
@@ -21598,6 +21593,48 @@ function deleteContact(e, id) {
     ContactsActions.deleteContact(id);
 }
 
+function editContact(e, id) {
+    e.preventDefault();
+    ContactsActions.editContact(id);
+}
+
+function handleEnterAndEscKeys(e) {
+    if (e.key == 'Enter') {
+        ContactsActions.saveContactEdits(_contactsStore2.default.getCleanEditContactFields());
+    } else if (e.key == 'Escape') {
+        ContactsActions.cancelContactEdits();
+    }
+}
+
+function handleNameFieldChange(e) {
+    ContactsActions.nameEditFieldChanged(e.target.value);
+}
+function handleEmailFieldChange(e) {
+    ContactsActions.emailEditFieldChanged(e.target.value);
+}
+function handlePhoneFieldChange(e) {
+    ContactsActions.phoneEditFieldChanged(e.target.value);
+}
+
+var clickcounter = 0;
+function handleContactRowClick(e) {
+    console.log("Out interval clickcounter", clickcounter);
+
+    if (clickcounter === 0) {
+        window.setTimeout(function () {
+            clickcounter = 0;
+            console.log("interval clickcounter", clickcounter);
+            return;
+        }, 300);
+    }
+    clickcounter += 1;
+
+    if (clickcounter === 2) {
+        console.log("double click", e.target.parentElement.dataset.id);
+        ContactsActions.editContact(e.target.parentElement.dataset.id);
+    }
+}
+
 var Contact = function Contact(props) {
     var _props$contact = props.contact;
     var id = _props$contact.id;
@@ -21605,45 +21642,104 @@ var Contact = function Contact(props) {
     var email = _props$contact.email;
     var phone = _props$contact.phone;
 
-    return _react2.default.createElement(
-        'tr',
-        null,
-        _react2.default.createElement(
-            'td',
-            null,
-            name
-        ),
-        _react2.default.createElement(
-            'td',
-            null,
-            email
-        ),
-        _react2.default.createElement(
-            'td',
-            null,
-            phone
-        ),
-        _react2.default.createElement(
-            'td',
-            null,
+
+    if (props.editContactFields.isEditing && id == props.editContactFields.id) {
+        return _react2.default.createElement(
+            'tr',
+            { onKeyUp: handleEnterAndEscKeys, className: 'bg-warning' },
             _react2.default.createElement(
-                'a',
-                { href: '#' },
-                _react2.default.createElement('span', { className: 'glyphicon glyphicon-pencil' })
-            )
-        ),
-        _react2.default.createElement(
-            'td',
-            null,
+                'td',
+                null,
+                _react2.default.createElement('input', { type: 'text',
+                    className: 'form-control',
+                    name: 'name',
+                    value: props.editContactFields.name,
+                    onChange: handleNameFieldChange.bind(undefined) })
+            ),
             _react2.default.createElement(
-                'a',
-                { href: '#', className: 'text-danger' },
-                _react2.default.createElement('span', { className: 'glyphicon glyphicon-remove', onClick: function onClick(e) {
-                        return deleteContact(e, id);
-                    } })
+                'td',
+                null,
+                _react2.default.createElement('input', { type: 'text',
+                    className: 'form-control',
+                    name: 'email',
+                    value: props.editContactFields.email,
+                    onChange: handleEmailFieldChange.bind(undefined) })
+            ),
+            _react2.default.createElement(
+                'td',
+                null,
+                _react2.default.createElement('input', { type: 'text',
+                    className: 'form-control',
+                    name: 'phone',
+                    value: props.editContactFields.phone,
+                    onChange: handlePhoneFieldChange.bind(undefined) })
+            ),
+            _react2.default.createElement(
+                'td',
+                null,
+                _react2.default.createElement(
+                    'a',
+                    { href: '#', className: 'text-success' },
+                    _react2.default.createElement('span', { className: 'glyphicon glyphicon-floppy-saved', onClick: function onClick(e) {
+                            return editContact(e, id);
+                        } })
+                )
+            ),
+            _react2.default.createElement(
+                'td',
+                null,
+                _react2.default.createElement(
+                    'a',
+                    { href: '#', className: 'text-danger' },
+                    _react2.default.createElement('span', { className: 'glyphicon glyphicon-floppy-remove', onClick: function onClick(e) {
+                            return deleteContact(e, id);
+                        } })
+                )
             )
-        )
-    );
+        );
+    } else {
+        return _react2.default.createElement(
+            'tr',
+            { className: 'contact-row', onClick: handleContactRowClick, 'data-id': id },
+            _react2.default.createElement(
+                'td',
+                null,
+                name
+            ),
+            _react2.default.createElement(
+                'td',
+                null,
+                email
+            ),
+            _react2.default.createElement(
+                'td',
+                null,
+                phone
+            ),
+            _react2.default.createElement(
+                'td',
+                null,
+                _react2.default.createElement(
+                    'a',
+                    { href: '#' },
+                    _react2.default.createElement('span', { className: 'glyphicon glyphicon-pencil', onClick: function onClick(e) {
+                            return editContact(e, id);
+                        } })
+                )
+            ),
+            _react2.default.createElement(
+                'td',
+                null,
+                _react2.default.createElement(
+                    'a',
+                    { href: '#', className: 'text-danger' },
+                    _react2.default.createElement('span', { className: 'glyphicon glyphicon-remove', onClick: function onClick(e) {
+                            return deleteContact(e, id);
+                        } })
+                )
+            )
+        );
+    }
 };
 
 exports.default = Contact;
@@ -21675,58 +21771,104 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function renderContacts(contacts) {
+function renderContacts(contacts, editContactFields) {
     return contacts.map(function (contact) {
-        return _react2.default.createElement(_Contact2.default, { contact: contact, key: contact.id });
+        return _react2.default.createElement(_Contact2.default, { contact: contact, key: contact.id, editContactFields: editContactFields });
     });
 }
 
 var ContactsList = function ContactsList(props) {
     var contacts = props.contacts;
+    var editContactFields = props.editContactFields;
 
-    var contactItems = renderContacts(contacts);
+    var contactItems = renderContacts(contacts, editContactFields);
     return _react2.default.createElement(
         'div',
-        { className: 'panel panel-default' },
+        { className: 'row' },
         _react2.default.createElement(
             'div',
-            { className: 'panel-heading' },
+            { className: 'col-xs-12' },
             _react2.default.createElement(
                 'h3',
                 { className: 'text-center' },
-                _react2.default.createElement('span', { className: 'glyphicon glyphicon-book' }),
-                ' Contactos'
-            )
-        ),
-        _react2.default.createElement(
-            'table',
-            { className: 'table' },
+                'Contactos'
+            ),
+            _react2.default.createElement('hr', null),
             _react2.default.createElement(
-                'tbody',
-                null,
+                'table',
+                { className: 'table table-striped' },
                 _react2.default.createElement(
-                    'tr',
+                    'thead',
                     null,
                     _react2.default.createElement(
-                        'th',
+                        'tr',
                         null,
-                        _react2.default.createElement('span', { className: 'glyphicon glyphicon-user' }),
-                        ' nombre'
-                    ),
-                    _react2.default.createElement(
-                        'th',
-                        null,
-                        _react2.default.createElement('span', { className: 'glyphicon glyphicon-envelope' }),
-                        ' email'
-                    ),
-                    _react2.default.createElement(
-                        'th',
-                        null,
-                        _react2.default.createElement('span', { className: 'glyphicon glyphicon-earphone' }),
-                        ' telefono'
+                        _react2.default.createElement(
+                            'th',
+                            null,
+                            _react2.default.createElement('span', { className: 'glyphicon glyphicon-user' }),
+                            ' nombre'
+                        ),
+                        _react2.default.createElement(
+                            'th',
+                            null,
+                            _react2.default.createElement('span', { className: 'glyphicon glyphicon-envelope' }),
+                            ' email'
+                        ),
+                        _react2.default.createElement(
+                            'th',
+                            null,
+                            _react2.default.createElement('span', { className: 'glyphicon glyphicon-earphone' }),
+                            ' telefono'
+                        )
                     )
                 ),
-                contactItems
+                _react2.default.createElement(
+                    'tbody',
+                    null,
+                    _react2.default.createElement(
+                        'tr',
+                        null,
+                        _react2.default.createElement(
+                            'td',
+                            null,
+                            _react2.default.createElement('input', { type: 'text', className: 'form-control' })
+                        ),
+                        _react2.default.createElement(
+                            'td',
+                            null,
+                            _react2.default.createElement('input', { type: 'text', className: 'form-control' })
+                        ),
+                        _react2.default.createElement(
+                            'td',
+                            null,
+                            _react2.default.createElement('input', { type: 'text', className: 'form-control' })
+                        ),
+                        _react2.default.createElement(
+                            'td',
+                            null,
+                            _react2.default.createElement(
+                                'a',
+                                { href: '#' },
+                                _react2.default.createElement('span', { className: 'glyphicon glyphicon-pencil', onClick: function onClick(e) {
+                                        return editContact(e, id);
+                                    } })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'td',
+                            null,
+                            _react2.default.createElement(
+                                'a',
+                                { href: '#', className: 'text-danger' },
+                                _react2.default.createElement('span', { className: 'glyphicon glyphicon-remove', onClick: function onClick(e) {
+                                        return deleteContact(e, id);
+                                    } })
+                            )
+                        )
+                    ),
+                    contactItems
+                )
             )
         )
     );
@@ -21743,6 +21885,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.saveNewContact = saveNewContact;
 exports.getContacts = getContacts;
 exports.deleteContact = deleteContact;
+exports.saveContactEdits = saveContactEdits;
 
 require('whatwg-fetch');
 
@@ -21794,6 +21937,10 @@ function deleteContact(id) {
     Database.ref('contacts/' + id).remove();
 }
 
+function saveContactEdits(contact) {
+    Database.ref('contacts/' + contact.id + '/contact').update(contact);
+}
+
 },{"./contactsActions.js":180,"./contactsConstants.js":181,"firebase":3,"whatwg-fetch":174}],180:[function(require,module,exports){
 'use strict';
 
@@ -21804,8 +21951,14 @@ exports.nameFieldChanged = nameFieldChanged;
 exports.phoneFieldChanged = phoneFieldChanged;
 exports.emailFieldChanged = emailFieldChanged;
 exports.saveNewContact = saveNewContact;
+exports.saveContactEdits = saveContactEdits;
 exports.updateContactsList = updateContactsList;
 exports.deleteContact = deleteContact;
+exports.editContact = editContact;
+exports.nameEditFieldChanged = nameEditFieldChanged;
+exports.emailEditFieldChanged = emailEditFieldChanged;
+exports.phoneEditFieldChanged = phoneEditFieldChanged;
+exports.cancelContactEdits = cancelContactEdits;
 
 var _contactsConstants = require('./contactsConstants.js');
 
@@ -21852,6 +22005,13 @@ function saveNewContact(contact) {
     });
 }
 
+function saveContactEdits(contact) {
+    ContactsAPI.saveContactEdits(contact);
+    _contactsDispatcher2.default.dispatch({
+        type: _contactsConstants2.default.EDIT_CONTACT_SAVED,
+        contact: contact
+    });
+}
 function updateContactsList(newContacts) {
     _contactsDispatcher2.default.dispatch({
         type: _contactsConstants2.default.UPDATE_CONTACTS_LIST,
@@ -21867,6 +22027,39 @@ function deleteContact(id) {
     });
 }
 
+function editContact(id) {
+    _contactsDispatcher2.default.dispatch({
+        type: _contactsConstants2.default.EDITING_CONTACT,
+        id: id
+    });
+}
+
+function nameEditFieldChanged(value) {
+    _contactsDispatcher2.default.dispatch({
+        type: _contactsConstants2.default.NAME_EDIT_FIELD_CHANGED,
+        value: value
+    });
+}
+function emailEditFieldChanged(value) {
+    _contactsDispatcher2.default.dispatch({
+        type: _contactsConstants2.default.EMAIL_EDIT_FIELD_CHANGED,
+        value: value
+    });
+}
+function phoneEditFieldChanged(value) {
+    _contactsDispatcher2.default.dispatch({
+        type: _contactsConstants2.default.PHONE_EDIT_FIELD_CHANGED,
+        value: value
+    });
+}
+
+function cancelContactEdits(value) {
+    _contactsDispatcher2.default.dispatch({
+        type: _contactsConstants2.default.CANCEL_CONTACT_EDITION,
+        value: value
+    });
+}
+
 },{"./contactsAPI.js":179,"./contactsConstants.js":181,"./contactsDispatcher.js":182}],181:[function(require,module,exports){
 'use strict';
 
@@ -21879,7 +22072,13 @@ exports.default = {
     EMAIL_FIELD_CHANGED: 'ADD FORM EMAIL FIELD CHANGED',
     NEW_CONTACT_SAVED: 'NEW CONTACT SAVED',
     UPDATE_CONTACTS_LIST: 'UPDATE_CONTACTS_LIST',
-    DELETED_CONTACT: 'DELETED_CONTACT'
+    DELETED_CONTACT: 'DELETED_CONTACT',
+    EDITING_CONTACT: 'EDITING_CONTACT',
+    NAME_EDIT_FIELD_CHANGED: 'NAME_EDIT_FIELD_CHANGED',
+    EMAIL_EDIT_FIELD_CHANGED: 'EMAIL_EDIT_FIELD_CHANGED',
+    PHONE_EDIT_FIELD_CHANGED: 'PHONE_EDIT_FIELD_CHANGED',
+    CANCEL_CONTACT_EDITION: 'CANCEL_CONTACT_EDITION',
+    EDIT_CONTACT_SAVED: 'EDIT_CONTACT_SAVED'
 };
 
 },{}],182:[function(require,module,exports){
@@ -21975,7 +22174,13 @@ var ContactsStore = function (_EventEmitter) {
                 phone: '',
                 email: ''
             },
-            contacts: []
+            contacts: [],
+            editContactFields: {
+                name: 'test',
+                phone: 'test',
+                email: 'test',
+                isEditing: false
+            }
         };
         return _this;
     }
@@ -21997,6 +22202,21 @@ var ContactsStore = function (_EventEmitter) {
                 name: utils.allTrim(this.state.addFormFields.name),
                 phone: utils.allTrim(this.state.addFormFields.phone),
                 email: utils.allTrim(this.state.addFormFields.email)
+            };
+        }
+    }, {
+        key: 'getRawEditContactFields',
+        value: function getRawEditContactFields() {
+            return this.state.editContactFields;
+        }
+    }, {
+        key: 'getCleanEditContactFields',
+        value: function getCleanEditContactFields() {
+            return {
+                name: utils.allTrim(this.state.editContactFields.name),
+                phone: utils.allTrim(this.state.editContactFields.phone),
+                email: utils.allTrim(this.state.editContactFields.email),
+                id: this.state.editContactFields.id
             };
         }
     }, {
@@ -22045,7 +22265,40 @@ var ContactsStore = function (_EventEmitter) {
                     break;
 
                 case _contactsConstants2.default.DELETED_CONTACT:
-                    console.log("Contacto eliminado " + action.id);
+                    break;
+
+                case _contactsConstants2.default.EDITING_CONTACT:
+                    this.state.editContactFields.isEditing = true;
+                    var index = this.state.contacts.findIndex(function (contact, i, array) {
+                        return contact.id == action.id;
+                    });
+                    this.state.editContactFields = Object.assign(this.state.editContactFields, this.state.contacts[index]);
+                    this.emit('change');
+                    break;
+
+                case _contactsConstants2.default.NAME_EDIT_FIELD_CHANGED:
+                    this.state.editContactFields.name = action.value;
+                    this.emit('change');
+                    break;
+
+                case _contactsConstants2.default.EMAIL_EDIT_FIELD_CHANGED:
+                    this.state.editContactFields.email = action.value;
+                    this.emit('change');
+                    break;
+
+                case _contactsConstants2.default.PHONE_EDIT_FIELD_CHANGED:
+                    this.state.editContactFields.phone = action.value;
+                    this.emit('change');
+                    break;
+
+                case _contactsConstants2.default.CANCEL_CONTACT_EDITION:
+                    this.state.editContactFields = Object.assign({}, { isEditing: false });
+                    this.emit('change');
+                    break;
+
+                case _contactsConstants2.default.EDIT_CONTACT_SAVED:
+                    this.state.editContactFields = Object.assign({}, { isEditing: false });
+                    this.emit('change');
                     break;
             }
         }

@@ -35,3 +35,7 @@ export function getContacts(){
 export function deleteContact(id){
     Database.ref(`contacts/${id}`).remove();
 }
+
+export function saveContactEdits(contact){
+    Database.ref(`contacts/${contact.id}/contact`).update(contact);
+}

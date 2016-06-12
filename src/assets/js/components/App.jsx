@@ -25,16 +25,19 @@ class App extends Component{
     }
 
     render(){
-
         return(
             <div>
-                <div className="well">
-                    <AddForm fields={this.state.addFormFields}/>                
+                <div className="row">
+                    <div className="col-xs-12">
+                        <AddForm fields={this.state.addFormFields}/> 
+                    </div>
                 </div>
-                <div className="well">
-                    <ContactsList contacts={this.state.contacts}/>
+                               
+                <div className="row">
+                    <div className="col-xs-12">
+                        <ContactsList {...this.state}/>
+                    </div>
                 </div>
-                
             </div>
         );
     }

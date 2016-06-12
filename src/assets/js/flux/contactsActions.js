@@ -31,6 +31,13 @@ export function saveNewContact(contact){
     });
 }
 
+export function saveContactEdits(contact){
+    ContactsAPI.saveContactEdits(contact);
+    ContactsDispatcher.dispatch({
+        type: ContactsConstants.EDIT_CONTACT_SAVED,
+        contact: contact
+    });
+}
 export function updateContactsList(newContacts){
     ContactsDispatcher.dispatch({
         type: ContactsConstants.UPDATE_CONTACTS_LIST,
@@ -43,5 +50,39 @@ export function deleteContact(id){
     ContactsDispatcher.dispatch({
         type: ContactsConstants.DELETED_CONTACT,
         id: id
+    });
+}
+
+export function editContact(id){
+    ContactsDispatcher.dispatch({
+        type: ContactsConstants.EDITING_CONTACT,
+        id: id
+    });
+}
+
+
+export function nameEditFieldChanged(value){
+    ContactsDispatcher.dispatch({
+        type: ContactsConstants.NAME_EDIT_FIELD_CHANGED,
+        value: value
+    });
+}
+export function emailEditFieldChanged(value){
+    ContactsDispatcher.dispatch({
+        type: ContactsConstants.EMAIL_EDIT_FIELD_CHANGED,
+        value: value
+    });
+}
+export function phoneEditFieldChanged(value){
+    ContactsDispatcher.dispatch({
+        type: ContactsConstants.PHONE_EDIT_FIELD_CHANGED,
+        value: value
+    });
+}
+
+export function cancelContactEdits(value){
+    ContactsDispatcher.dispatch({
+        type: ContactsConstants.CANCEL_CONTACT_EDITION,
+        value: value
     });
 }
