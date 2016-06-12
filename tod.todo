@@ -9,3 +9,4 @@ Listo
 -encontrar la forma de revertir el estado de la aplicacion despues de una edicion o eliminacion
 
 -hacer focus en el input a editar despues del doble click
+-corregir boton cancelar edicion (elimina el contacto)
